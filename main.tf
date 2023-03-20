@@ -9,12 +9,6 @@ resource "google_project_service" "iam_api" {
   disable_on_destroy = false
 }
 
-# Step 2: Get Project informations
-resource "google_project" "current_project" {
-  name       = "Current Project"
-  project_id = var.project_id
-}
-
 # Step 3: Create Firestore
 resource "google_project_service" "firestore" {
   project = var.project_id
