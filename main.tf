@@ -9,6 +9,27 @@ resource "google_project_service" "iam_api" {
   disable_on_destroy = false
 }
 
+# Step 2: Get Project informations
+resource "google_project" "current_project" {
+  name       = "Current Project"
+  project_id = var.project_id
+}
+
+# Step 3: Create Firestore
+resource "google_project_service" "firestore" {
+  project = var.project_id
+  service = "firestore.googleapis.com"
+}
+
+resource "google_firestore_database" "database" {
+  project     = var
+  name        = "(default)"
+  location_id = "location"
+  type        = "FIRESTORE_NATIVE"
+
+  depends_on = [google_project_service.firestore]
+}
+
 resource "google_service_account" "xia_terraform" {
   account_id = var.terraform_user
   project = var.project_id
