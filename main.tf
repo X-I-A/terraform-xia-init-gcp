@@ -1,3 +1,5 @@
+data "google_client_config" "current" {}
+
 # Step 1: Preparation of all needed apis
 resource "google_project_service" "cloud_resource_manager_api" {
   service = "cloudresourcemanager.googleapis.com"
@@ -11,7 +13,7 @@ resource "google_project_service" "iam_api" {
 
 # Step 3: Create Firestore
 resource "google_project_service" "firestore" {
-  project = var.project_id
+  project = data.google_client_config.current.project
   service = "firestore.googleapis.com"
 }
 
