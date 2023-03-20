@@ -22,9 +22,9 @@ resource "google_project_service" "firestore" {
 }
 
 resource "google_firestore_database" "database" {
-  project     = var
+  project     = var.project_id
   name        = "(default)"
-  location_id = "location"
+  location_id = var.firestore_location
   type        = "FIRESTORE_NATIVE"
 
   depends_on = [google_project_service.firestore]
