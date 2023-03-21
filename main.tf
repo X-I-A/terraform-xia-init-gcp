@@ -24,5 +24,4 @@ module "init_terraform_user" {
 module "init_cloud_storage" {
   source = "./modules/init-cloud-bucket"
   project_id = var.project_id
-  terraform_user = var.terraform_user
 }
