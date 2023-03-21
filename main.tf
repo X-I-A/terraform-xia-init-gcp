@@ -1,102 +1,28 @@
-# Data definition
-data "google_project" "project" {
+module "init_project" {
+  source = "./modules/init-project"
+  project_id = var.project_id
 }
 
-# Step 1: Preparation of all needed apis
-resource "google_project_service" "cloud_resource_manager_api" {
-  service = "cloudresourcemanager.googleapis.com"
-  disable_on_destroy = false
+module "init_cloud_run" {
+  source = "./modules/init-cloud-run"
+  project_id = var.project_id
+  repository_project = var.repository_project
 }
 
-resource "google_project_service" "cloudrun_api" {
-  service = "run.googleapis.com"
-  disable_on_destroy = false
+module "init_firestore" {
+  source = "./modules/init-firestore"
+  project_id = var.project_id
+  location = var.firestore_location
 }
 
-resource "google_project_service" "iam_api" {
-  service = "iam.googleapis.com"
-  disable_on_destroy = false
+module "init_terraform_user" {
+  source = "./modules/init-terraform-user"
+  project_id = var.project_id
+  terraform_user = var.terraform_user
 }
 
-# Step 3: Create Firestore
-resource "google_project_service" "firestore" {
-  project = var.project_id
-  service = "firestore.googleapis.com"
-}
-
-resource "google_firestore_database" "database" {
-  project     = var.project_id
-  name        = "(default)"
-  location_id = var.firestore_location
-  type        = "FIRESTORE_NATIVE"
-
-  depends_on = [google_project_service.firestore]
-}
-
-# Step 4: Create the service user to deploy terraform
-resource "google_service_account" "terraform_user" {
-  account_id = var.terraform_user
-  project = var.project_id
-
-  depends_on = [google_project_service.iam_api]
-}
-
-resource "google_project_iam_binding" "security_admin_binding" {
-  project = var.project_id
-  role    = "roles/securitycenter.admin"
-  members = ["serviceAccount:${google_service_account.terraform_user.email}"]
-  depends_on = [google_service_account.terraform_user]
-}
-
-resource "google_project_iam_binding" "service_usage_admin_binding" {
-  project = var.project_id
-  role    = "roles/serviceusage.serviceUsageAdmin"
-  members = ["serviceAccount:${google_service_account.terraform_user.email}"]
-  depends_on = [google_service_account.terraform_user]
-}
-
-resource "google_project_iam_binding" "storage_object_admin_binding" {
-  project = var.project_id
-  role    = "roles/storage.objectAdmin"
-  members = ["serviceAccount:${google_service_account.terraform_user.email}"]
-  depends_on = [google_service_account.terraform_user]
-}
-
-resource "google_project_iam_binding" "service_account_admin_binding" {
-  project = var.project_id
-  role    = "roles/iam.serviceAccountAdmin"
-  members = ["serviceAccount:${google_service_account.terraform_user.email}"]
-  depends_on = [google_service_account.terraform_user]
-}
-
-resource "google_project_iam_binding" "service_account_user_binding" {
-  project = var.project_id
-  role    = "roles/iam.serviceAccountUser"
-  members = ["serviceAccount:${google_service_account.terraform_user.email}"]
-  depends_on = [google_service_account.terraform_user]
-}
-
-# Step 5: Generate a json key
-resource "google_service_account_key" "terraform_user_key" {
-  service_account_id = google_service_account.terraform_user.email
-}
-
-resource "local_file" "service_account_key" {
-  content  = base64decode(google_service_account_key.terraform_user_key.private_key)
-  filename = "./service-account.json"
-}
-
-# Step 6: Create a bucket to save terraform state
-resource "google_storage_bucket" "terraform-state-backed" {
-  name          = "${var.project_id}-tf-states"
-  location      = var.gcs_location
-  force_destroy = true
-}
-
-# Step 7: Need access to the project who holds the docker image
-resource "google_project_iam_binding" "repository_binding" {
-  project = var.repository_project
-  role    = "roles/storage.objectAdmin"
-  members = ["serviceAccount:service-${data.google_project.project.number}@serverless-robot-prod.iam.gserviceaccount.com"]
-  depends_on = [google_project_service.cloudrun_api]
+module "init_cloud_storage" {
+  source = "./modules/init-terraform-user"
+  project_id = var.project_id
+  terraform_user = var.terraform_user
 }
