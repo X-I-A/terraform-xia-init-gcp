@@ -46,6 +46,13 @@ resource "google_project_iam_binding" "service_usage_admin_binding" {
   depends_on = [google_service_account.terraform_user]
 }
 
+resource "google_project_iam_binding" "storage_object_admin_binding" {
+  project = var.project_id
+  role    = "roles/storage.objectAdmin"
+  members = ["serviceAccount:${google_service_account.terraform_user.email}"]
+  depends_on = [google_service_account.terraform_user]
+}
+
 resource "google_project_iam_binding" "service_account_admin_binding" {
   project = var.project_id
   role    = "roles/iam.serviceAccountAdmin"
