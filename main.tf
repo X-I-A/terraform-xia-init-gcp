@@ -1,3 +1,7 @@
+# Data definition
+data "google_project" "project" {
+}
+
 # Step 1: Preparation of all needed apis
 resource "google_project_service" "cloud_resource_manager_api" {
   service = "cloudresourcemanager.googleapis.com"
