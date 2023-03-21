@@ -62,6 +62,6 @@ resource "google_project_iam_binding" "service_account_user_binding" {
 
 # Step 5: Create and save the json key
 resource "google_service_account_key" "terraform_user_key" {
-  service_account_id = google_service_account.terraform_user
+  service_account_id = google_service_account.terraform_user.email
 }
 
