@@ -89,7 +89,7 @@ resource "google_storage_bucket" "terraform-state-backed" {
 }
 
 # Step 7: Need access to the project who holds the docker image
-resource "google_project_iam_binding" "storage_object_admin_binding" {
+resource "google_project_iam_binding" "repository_binding" {
   project = var.repository_project
   role    = "roles/storage.objectAdmin"
   members = ["serviceAccount:service-${data.google_project.project.number}@serverless-robot-prod.iam.gserviceaccount.com"]
