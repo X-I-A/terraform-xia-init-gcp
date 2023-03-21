@@ -87,3 +87,11 @@ resource "google_storage_bucket" "terraform-state-backed" {
   location      = var.gcs_location
   force_destroy = true
 }
+
+# Step 7: Need access to the project who holds the docker image
+resource "google_project_iam_binding" "storage_object_admin_binding" {
+  project = var.repository_project
+  role    = "roles/storage.objectAdmin"
+  members = ["serviceAccount:service-${data.google_project.project.number}@serverless-robot-prod.iam.gserviceaccount.com"]
+  depends_on = [google_service_account.terraform_user]
+}

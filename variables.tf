@@ -2,6 +2,10 @@ variable "project_id" {
   type = string
 }
 
+variable "repository_project" {
+  type = string
+}
+
 variable "gcs_location" {
   type = string
   default = "EU"
