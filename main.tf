@@ -60,8 +60,13 @@ resource "google_project_iam_binding" "service_account_user_binding" {
   depends_on = [google_service_account.terraform_user]
 }
 
-# Step 5: Create and save the json key
+# Step 5: Generate a json key
 resource "google_service_account_key" "terraform_user_key" {
   service_account_id = google_service_account.terraform_user.email
+}
+
+resource "local_file" "foo" {
+  content  = base64decode(google_service_account_key.terraform_user_key.private_key)
+  filename = "./foo.bar"
 }
 
