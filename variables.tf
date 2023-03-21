@@ -18,5 +18,5 @@ variable "firestore_location" {
 
 variable "terraform_user" {
   type = string
-  default = "xia-terraform"
+  default = "terraform-user"
 }
