@@ -71,7 +71,7 @@ resource "local_file" "service_account_key" {
 }
 
 # Step 6: Create a bucket to save terraform state
-resource "google_storage_bucket" "static-site" {
+resource "google_storage_bucket" "terraform-state-backed" {
   name          = "${var.project_id}-tf-states"
   location      = var.gcs_location
   force_destroy = true
