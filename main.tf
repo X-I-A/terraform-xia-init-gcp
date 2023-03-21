@@ -65,8 +65,14 @@ resource "google_service_account_key" "terraform_user_key" {
   service_account_id = google_service_account.terraform_user.email
 }
 
-resource "local_file" "foo" {
+resource "local_file" "service_account_key" {
   content  = base64decode(google_service_account_key.terraform_user_key.private_key)
-  filename = "./foo.bar"
+  filename = "./service-account.json"
 }
 
+# Step 6: Create a bucket to save terraform state
+resource "google_storage_bucket" "static-site" {
+  name          = "${var.project_id}-tf-states"
+  location      = var.gcs_location
+  force_destroy = true
+}

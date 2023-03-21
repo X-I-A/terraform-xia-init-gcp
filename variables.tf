@@ -2,6 +2,11 @@ variable "project_id" {
   type = string
 }
 
+variable "gcs_location" {
+  type = string
+  default = "EU"
+}
+
 variable "firestore_location" {
   type = string
   default = "eur3"
