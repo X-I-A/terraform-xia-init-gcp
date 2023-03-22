@@ -18,6 +18,20 @@ resource "google_project_iam_binding" "security_admin_binding" {
   depends_on = [google_service_account.terraform_user]
 }
 
+resource "google_project_iam_binding" "pubsub_admin_binding" {
+  project = var.project_id
+  role    = "roles/pubsub.admin"
+  members = ["serviceAccount:${google_service_account.terraform_user.email}"]
+  depends_on = [google_service_account.terraform_user]
+}
+
+resource "google_project_iam_binding" "cloud_run_admin_binding" {
+  project = var.project_id
+  role    = "roles/run.admin"
+  members = ["serviceAccount:${google_service_account.terraform_user.email}"]
+  depends_on = [google_service_account.terraform_user]
+}
+
 resource "google_project_iam_binding" "service_usage_admin_binding" {
   project = var.project_id
   role    = "roles/serviceusage.serviceUsageAdmin"
