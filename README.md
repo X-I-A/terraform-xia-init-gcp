@@ -10,7 +10,9 @@ Prepare a project for the usage of deploying XIA components
 ### Prerequisite
 An empty Google Cloud Project
 
-If the project is not empty, you might need to import existed infrastructure to Terraform state. 
+If the project is not empty, you might meet some `resource already exists` errors.
+You could import them into terraform states 
+or simply removing the related modules in `modules` subdirectory
 
 ### Variables 
 
@@ -34,8 +36,11 @@ terraform -chdir=environments/prod apply -var="project_id=<project_id>" -var="re
 ### Expected Results
 * A service_account.json for the created service account
 * The follow resources has been created:
+  * **json key file** of the terraform user stored at `environments/prod/service_acount.json`.
   * Essential service API are activated
   * Cloud bucket: <project_id>-tf-states created
   * Cloud Run Service Activated and could pull image from Repository Project
   * Firestore Database initialized
   * Terraform user created with essential authorization.
+
+### 
