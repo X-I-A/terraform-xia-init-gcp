@@ -11,56 +11,62 @@ resource "google_service_account" "terraform_user" {
   depends_on = [google_project_service.iam_api]
 }
 
-resource "google_project_iam_binding" "security_admin_binding" {
+resource "google_project_iam_member" "security_admin_binding" {
   project = var.project_id
   role    = "roles/iam.securityAdmin"
-  members = ["serviceAccount:${google_service_account.terraform_user.email}"]
+  member = "serviceAccount:${google_service_account.terraform_user.email}"
+
   depends_on = [google_service_account.terraform_user]
 }
 
-resource "google_project_iam_binding" "pubsub_admin_binding" {
+resource "google_project_iam_member" "pubsub_admin_binding" {
   project = var.project_id
   role    = "roles/pubsub.admin"
-  members = ["serviceAccount:${google_service_account.terraform_user.email}"]
+  member = "serviceAccount:${google_service_account.terraform_user.email}"
+
   depends_on = [google_service_account.terraform_user]
 }
 
-resource "google_project_iam_binding" "cloud_run_admin_binding" {
+resource "google_project_iam_member" "cloud_run_admin_binding" {
   project = var.project_id
   role    = "roles/run.admin"
-  members = ["serviceAccount:${google_service_account.terraform_user.email}"]
+  member = "serviceAccount:${google_service_account.terraform_user.email}"
+
   depends_on = [google_service_account.terraform_user]
 }
 
-resource "google_project_iam_binding" "service_usage_admin_binding" {
+resource "google_project_iam_member" "service_usage_admin_binding" {
   project = var.project_id
   role    = "roles/serviceusage.serviceUsageAdmin"
-  members = ["serviceAccount:${google_service_account.terraform_user.email}"]
+  member = "serviceAccount:${google_service_account.terraform_user.email}"
+
   depends_on = [google_service_account.terraform_user]
 }
 
-resource "google_project_iam_binding" "storage_object_admin_binding" {
+resource "google_project_iam_member" "storage_object_admin_binding" {
   project = var.project_id
   role    = "roles/storage.objectAdmin"
-  members = ["serviceAccount:${google_service_account.terraform_user.email}"]
+  member = "serviceAccount:${google_service_account.terraform_user.email}"
+
   depends_on = [google_service_account.terraform_user]
 }
 
-resource "google_project_iam_binding" "service_account_admin_binding" {
+resource "google_project_iam_member" "service_account_admin_binding" {
   project = var.project_id
   role    = "roles/iam.serviceAccountAdmin"
-  members = ["serviceAccount:${google_service_account.terraform_user.email}"]
+  member = "serviceAccount:${google_service_account.terraform_user.email}"
+
   depends_on = [google_service_account.terraform_user]
 }
 
-resource "google_project_iam_binding" "service_account_user_binding" {
+resource "google_project_iam_member" "service_account_user_binding" {
   project = var.project_id
   role    = "roles/iam.serviceAccountUser"
-  members = ["serviceAccount:${google_service_account.terraform_user.email}"]
+  member = "serviceAccount:${google_service_account.terraform_user.email}"
+
   depends_on = [google_service_account.terraform_user]
 }
 
-# Step 5: Generate a json key
 resource "google_service_account_key" "terraform_user_key" {
   service_account_id = google_service_account.terraform_user.email
 }
