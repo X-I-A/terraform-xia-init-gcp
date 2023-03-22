@@ -11,16 +11,9 @@ resource "google_service_account" "terraform_user" {
   depends_on = [google_project_service.iam_api]
 }
 
-resource "google_project_iam_binding" "viewer_binding" {
-  project = var.project_id
-  role    = "roles/viewer"
-  members = ["serviceAccount:${google_service_account.terraform_user.email}"]
-  depends_on = [google_service_account.terraform_user]
-}
-
 resource "google_project_iam_binding" "security_admin_binding" {
   project = var.project_id
-  role    = "roles/securitycenter.admin"
+  role    = "roles/iam.securityAdmin"
   members = ["serviceAccount:${google_service_account.terraform_user.email}"]
   depends_on = [google_service_account.terraform_user]
 }
