@@ -27,6 +27,7 @@ Open the Google Cloud Shell from Google Cloud Console and launching the followin
 ```bash
 git clone https://github.com/X-I-A/terraform-xia-init-gcp
 cd terraform-xia-init-gcp
+terraform -chdir=environments/prod workspace new <project_id>
 terraform -chdir=environments/prod init
 terraform -chdir=environments/prod validate
 terraform -chdir=environments/prod plan -var="project_id=<project_id>" -var="repository_project=<repository project name>"
