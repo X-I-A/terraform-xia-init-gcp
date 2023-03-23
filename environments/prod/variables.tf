@@ -6,7 +6,7 @@ variable "repository_project" {
   type = string
 }
 
-variable "gcs_location" {
+variable "data_location" {
   type = string
   default = "EU"
 }
@@ -14,6 +14,11 @@ variable "gcs_location" {
 variable "firestore_location" {
   type = string
   default = "eur3"
+}
+
+variable "dataset_id" {
+  type = string
+  default = "xia_app_core"
 }
 
 variable "terraform_user" {

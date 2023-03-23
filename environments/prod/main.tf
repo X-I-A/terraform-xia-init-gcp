@@ -21,7 +21,15 @@ module "init_terraform_user" {
   terraform_user = var.terraform_user
 }
 
+module "init_bigquery" {
+  source = "../../modules/init-bigquery"
+  project_id = var.project_id
+  dataset_id = var.dataset_id
+  dataset_location = var.data_location
+}
+
 module "init_cloud_storage" {
   source = "../../modules/init-cloud-bucket"
   project_id = var.project_id
+  gcs_location = var.data_location
 }
