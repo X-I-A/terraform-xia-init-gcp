@@ -3,6 +3,11 @@ module "init_project" {
   project_id = var.project_id
 }
 
+module "init_pubsub" {
+  source = "../../modules/init-pubsub"
+  project_id = var.project_id
+}
+
 module "init_cloud_run" {
   source = "../../modules/init-cloud-run"
   project_id = var.project_id
